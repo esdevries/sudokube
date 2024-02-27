@@ -1,6 +1,8 @@
 import requests
 import os
 import random
+import xml.etree.ElementTree as ET
+
 
 def pick_random_icons():
     all_icons = os.listdir('./icons')
@@ -8,17 +10,21 @@ def pick_random_icons():
     return random.sample(all_icons, 6)
 
 
-def open_icon(icon):
+def open_icon(icon_path):
     try:
-        with open(f'./icons/{icon}', 'r') as in_icon:
+        with open(icon_path, 'r') as in_icon:
             return in_icon.read()
     except FileNotFoundError:
         print("Icon not found")
+        exit()
 
 
 def process_icon(svg_icon_path):
     svg_format = open_icon(svg_icon_path)
-    return svg_format
+    root = ET.fromstring(svg_format)
+    elements_with_fill = root.findall('.//*[@fill]')
+    for element in elements_with_fill:
+        print(element.get('points'), element.get('fill'))
 
 
 def generate_sudoku():
