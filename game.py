@@ -8,8 +8,18 @@ def pick_random_icons():
     return random.sample(all_icons, 6)
 
 
-def process_icon():
-    pass
+def open_icon(icon):
+    try:
+        with open(f'./icons/{icon}', 'r') as in_icon:
+            return in_icon.read()
+    except FileNotFoundError:
+        print("Icon not found")
+
+
+def process_icon(svg_icon_path):
+    svg_format = open_icon(svg_icon_path)
+    return svg_format
+
 
 def generate_sudoku():
     response = requests.get('https://sudoku-game-and-api.netlify.app/api/sudoku')
@@ -18,7 +28,8 @@ def generate_sudoku():
 
 
 def match_colors_to_sudoku(sudokus):
-    colors = ("red", "yellow", "blue", "white", "green", "orange")
+    # process icon
+
     matched_sudokus = zip(colors, sudokus)
     return list(matched_sudokus)
 
