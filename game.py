@@ -1,4 +1,15 @@
 import requests
+import os
+import random
+
+def pick_random_icons():
+    all_icons = os.listdir('./icons')
+    all_icons = [icon for icon in all_icons if os.path.isfile(os.path.join('./icons', icon))]
+    return random.sample(all_icons, 6)
+
+
+def process_icon():
+    pass
 
 def generate_sudoku():
     response = requests.get('https://sudoku-game-and-api.netlify.app/api/sudoku')
