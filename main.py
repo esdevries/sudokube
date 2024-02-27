@@ -1,13 +1,8 @@
-import requests
-
-def generate_sudoku():
-    response = requests.get('https://sudoku-api.vercel.app/api/dosuku?query={newboard(limit:1){grids{solution}}}')
-    sudoku = response.json()["newboard"]["grids"][0]["solution"]
-    return sudoku
-
+import game
 
 def main():
-    print(generate_sudoku())
+    print(game.create_game())
 
 
-main()
+if __name__== "__main__":
+    main()
