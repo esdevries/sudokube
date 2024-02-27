@@ -23,10 +23,6 @@ def convert2d(x, y):
     return (x+y*9)
 
 
-def convert2dreverse(position):
-    return (position % 9 ,position // 9)
-
-
 def process_icon(svg_icon_path):
     svg_format = open_icon(svg_icon_path)
     root = ET.fromstring(svg_format)
@@ -81,10 +77,18 @@ def match_colors_to_sudokus(sudokus):
 
     for sudoku_and_color in matching_sudok:
         sudoku = sudoku_and_color[1]
-        print(sudoku_and_color)
+        colors = process_icon(f'./icons/{sudoku_and_color[0]}')
+        empty_sudoku = []
+        empty_line = []
+        for position in range(81):
+            empty_line.append((colors[position], sudoku[position // 9][position % 9]))
+            if len(empty_line) == 9:
+                empty_sudoku.append(empty_line)
+                empty_line = []
+        full_sodoku_list.append(empty_sudoku)
 
-        
     return full_sodoku_list
+
 
 def match_color_to_number(sudoku_game):
     color, sudoku = sudoku_game[0], sudoku_game[1]
