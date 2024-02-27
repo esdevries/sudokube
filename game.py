@@ -55,8 +55,12 @@ def process_icon(svg_icon_path):
             for wid in range(width):
                 for heit in range(height):
                     full_cords[convert2d(base_x+wid,base_y+heit)] = element.get('fill')
-
-    print(full_cords)
+            
+    for position in range(81):
+        if position not in full_cords.keys():
+            full_cords[position] = '#FFFFFF'
+    
+    return full_cords
 
 
 def generate_sudoku():
@@ -65,11 +69,14 @@ def generate_sudoku():
     return sudoku
 
 
-def match_colors_to_sudoku(sudokus):
-    # process icon
+def match_colors_to_sudokus(sudokus):
+    matching_sudokus = []
 
-    matched_sudokus = zip(colors, sudokus)
-    return list(matched_sudokus)
+    random_icons = pick_random_icons()
+
+    for icon in random_icons:
+        colors_pos = process_icon(f'./icons/{icon}') 
+        
 
 
 def match_color_to_number(sudoku_game):
