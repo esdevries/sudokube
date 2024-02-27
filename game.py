@@ -19,12 +19,44 @@ def open_icon(icon_path):
         exit()
 
 
+def convert2d(x, y):
+    return (x+y*9)
+
+
 def process_icon(svg_icon_path):
     svg_format = open_icon(svg_icon_path)
     root = ET.fromstring(svg_format)
     elements_with_fill = root.findall('.//*[@fill]')
+    full_cords = {}
+
+    def extract_coordinates(points):
+        return [tuple(map(float, point.split(','))) for point in points.split()]
+
     for element in elements_with_fill:
-        print(element.get('points'), element.get('fill'))
+
+        if element.get('points') != None:
+            cords = extract_coordinates(element.get('points'))
+            for cord in cords:
+                try:
+                    full_cords[int(convert2d(cord[0], cord[1]))] = element.get('fill')
+                except ValueError:
+                    print("Could not convert float coordinate to int")  
+                    exit()
+
+        elif element.get('x') != None:
+            try:
+                width = int(element.get('width', 1))
+                height = int(element.get('height', 1))
+                base_x = int(element.get('x', 1))
+                base_y = int(element.get('y', 1))
+            except ValueError:
+                print("Could not convert width and height to integers")
+                exit()
+            for wid in range(width):
+                for heit in range(height):
+                    full_cords[convert2d(base_x+wid,base_y+heit)] = element.get('fill')
+
+    print(full_cords)
 
 
 def generate_sudoku():
