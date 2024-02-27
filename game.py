@@ -18,10 +18,11 @@ def match_color_to_number(sudoku_game):
     for line in sudoku:
         matched_line = []
         for number in line:
-            matched_line.append([color, number])
+            matched_line.append((color, number))
         matched_sudoku.append(matched_line)
 
     return matched_sudoku
+
 
 def create_game():
     sudokus = []
