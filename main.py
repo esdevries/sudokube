@@ -1,7 +1,8 @@
 import game
 
 def main():
-    print(game.create_game())
+    sudoku_game = game.create_game()
+    game.print_game(sudoku_game)
 
 
 if __name__== "__main__":

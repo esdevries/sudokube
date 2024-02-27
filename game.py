@@ -34,3 +34,9 @@ def create_game():
         full_matched_game.append(match_color_to_number(sudoku))
     
     return full_matched_game
+
+
+def print_game(sudokus):
+    for sudoku in sudokus:
+        for line in sudoku:
+            print(line)
