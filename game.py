@@ -23,6 +23,10 @@ def convert2d(x, y):
     return (x+y*9)
 
 
+def convert2dreverse(position):
+    return (position % 9 ,position // 9)
+
+
 def process_icon(svg_icon_path):
     svg_format = open_icon(svg_icon_path)
     root = ET.fromstring(svg_format)
@@ -46,7 +50,7 @@ def process_icon(svg_icon_path):
         elif element.get('x') != None:
             try:
                 width = int(element.get('width', 1))
-                height = int(element.get('height', 1))
+                height = int(element.get('height', 1))                
                 base_x = int(element.get('x', 1))
                 base_y = int(element.get('y', 1))
             except ValueError:
@@ -55,7 +59,7 @@ def process_icon(svg_icon_path):
             for wid in range(width):
                 for heit in range(height):
                     full_cords[convert2d(base_x+wid,base_y+heit)] = element.get('fill')
-            
+
     for position in range(81):
         if position not in full_cords.keys():
             full_cords[position] = '#FFFFFF'
@@ -70,14 +74,17 @@ def generate_sudoku():
 
 
 def match_colors_to_sudokus(sudokus):
-    matching_sudokus = []
+    full_sodoku_list = []
 
     random_icons = pick_random_icons()
+    matching_sudok = list(zip(random_icons, sudokus))
 
-    for icon in random_icons:
-        colors_pos = process_icon(f'./icons/{icon}') 
+    for sudoku_and_color in matching_sudok:
+        sudoku = sudoku_and_color[1]
+        print(sudoku_and_color)
+
         
-
+    return full_sodoku_list
 
 def match_color_to_number(sudoku_game):
     color, sudoku = sudoku_game[0], sudoku_game[1]
@@ -96,7 +103,7 @@ def create_game():
     for _ in range(6):
         sudokus.append(generate_sudoku())
     
-    color_matched = match_colors_to_sudoku(sudokus)
+    color_matched = match_colors_to_sudokus(sudokus)
     full_matched_game = []
     for sudoku in color_matched:
         full_matched_game.append(match_color_to_number(sudoku))
